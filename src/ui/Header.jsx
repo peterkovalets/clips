@@ -6,7 +6,7 @@ function Header() {
   return (
     <header className="bg-gray-700 py-4">
       <Container>
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-7">
           <Logo />
           <MainNav />
         </div>
