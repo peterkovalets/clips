@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import LinkButton from './LinkButton';
 import Modal from './Modal';
-import LoginForm from '../features/authentication/LoginForm';
+import AuthTabs from '../features/authentication/AuthTabs';
 
 function MainNav() {
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -29,7 +29,7 @@ function MainNav() {
         onClose={() => setShowLoginModal(false)}
         title="Your Account"
       >
-        <LoginForm />
+        <AuthTabs />
       </Modal>
     </nav>
   );

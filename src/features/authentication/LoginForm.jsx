@@ -8,8 +8,16 @@ function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    if (!email || !password) return;
+
+    console.log(email, password);
+  }
+
   return (
-    <Form>
+    <Form onSubmit={handleSubmit}>
       <FormRow label="Email">
         <Input
           type="email"
@@ -30,7 +38,7 @@ function LoginForm() {
           onChange={(e) => setPassword(e.target.value)}
         />
       </FormRow>
-      <Button disabled={!email || !password}>Submit</Button>
+      <Button>Submit</Button>
     </Form>
   );
 }
