@@ -3,13 +3,23 @@ import Button from '../../ui/Button';
 import Form from '../../ui/Form';
 import FormRow from '../../ui/FormRow';
 import Input from '../../ui/Input';
+import { useRegister } from './useRegister';
 
-function RegisterForm() {
-  const { register, handleSubmit, getValues, formState } = useForm();
-  const { errors } = formState;
+function RegisterForm({ closeModal }) {
+  const { register: registerAccount, isLoading } = useRegister();
+  const { register, handleSubmit, getValues, formState, reset } = useForm({
+    mode: 'onTouched',
+  });
+  const { errors, isValid } = formState;
 
   function onSubmit(data) {
-    console.log(data);
+    registerAccount(
+      { ...data, age: Number(data.age) },
+      {
+        onSettled: () => reset(),
+        onSuccess: () => closeModal(),
+      },
+    );
   }
 
   return (
@@ -18,6 +28,7 @@ function RegisterForm() {
         <Input
           id="name"
           placeholder="Enter Name"
+          disabled={isLoading}
           {...register('name', {
             required: 'This field is required',
             minLength: {
@@ -36,6 +47,7 @@ function RegisterForm() {
           type="email"
           id="email"
           placeholder="Enter Email"
+          disabled={isLoading}
           {...register('email', {
             required: 'This field is required',
             pattern: {
@@ -50,6 +62,7 @@ function RegisterForm() {
           type="number"
           id="age"
           placeholder="Enter Age"
+          disabled={isLoading}
           {...register('age', {
             required: 'This field is required',
             min: {
@@ -64,6 +77,7 @@ function RegisterForm() {
           type="password"
           id="password"
           placeholder="Enter Password"
+          disabled={isLoading}
           {...register('password', {
             required: 'This field is required',
             minLength: {
@@ -81,6 +95,7 @@ function RegisterForm() {
           type="password"
           id="password-confirm"
           placeholder="Confirm Password"
+          disabled={isLoading}
           {...register('passwordConfirm', {
             required: 'This field is required',
             validate: (value) =>
@@ -88,21 +103,22 @@ function RegisterForm() {
           })}
         />
       </FormRow>
-      <FormRow label="Phone Number" error={errors?.phone?.message}>
+      <FormRow label="Phone Number" error={errors?.phoneNumber?.message}>
         <Input
-          id="phone"
+          type="tel"
+          id="phone-number"
           placeholder="Enter Phone Number"
-          {...register('phone', {
+          disabled={isLoading}
+          {...register('phoneNumber', {
             required: 'This field is required',
             pattern: {
-              value:
-                /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/,
+              value: /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/,
               message: 'Phone number is not valid',
             },
           })}
         />
       </FormRow>
-      <Button>Submit</Button>
+      <Button disabled={isLoading || !isValid}>Submit</Button>
     </Form>
   );
 }

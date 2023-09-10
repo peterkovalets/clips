@@ -2,12 +2,12 @@ import Tabs from '../../ui/Tabs';
 import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
 
-const tabs = [
-  { label: 'Login', element: <LoginForm /> },
-  { label: 'Register', element: <RegisterForm /> },
-];
+function AuthTabs({ closeModal }) {
+  const tabs = [
+    { label: 'Login', element: <LoginForm closeModal={closeModal} /> },
+    { label: 'Register', element: <RegisterForm closeModal={closeModal} /> },
+  ];
 
-function AuthTabs() {
   return <Tabs tabs={tabs} />;
 }
 

@@ -4,7 +4,7 @@ import { Tab } from '@headlessui/react';
 function Tabs({ tabs }) {
   return (
     <Tab.Group>
-      <Tab.List className={`grid grid-cols-${tabs.length} justify-between`}>
+      <Tab.List className="flex">
         {tabs.map((tab) => (
           <Tab as={Fragment} key={tab.label}>
             {({ selected }) => (
@@ -13,7 +13,7 @@ function Tabs({ tabs }) {
                   selected
                     ? 'cursor-not-allowed bg-indigo-400'
                     : 'bg-transparent transition-colors duration-300 hover:text-indigo-400'
-                } rounded-sm px-3 py-2`}
+                } w-full rounded-sm px-3 py-2`}
               >
                 {tab.label}
               </button>

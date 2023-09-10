@@ -3,7 +3,7 @@ import BgVideo from '../assets/hero-bg.mp4';
 
 function Hero() {
   return (
-    <div className="relative py-72">
+    <section className="relative py-72">
       <video
         src={BgVideo}
         autoPlay
@@ -26,7 +26,7 @@ function Hero() {
           </p>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 

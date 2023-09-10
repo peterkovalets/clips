@@ -3,8 +3,10 @@ import Button from '../../ui/Button';
 import Form from '../../ui/Form';
 import FormRow from '../../ui/FormRow';
 import Input from '../../ui/Input';
+import { useLogin } from './useLogin';
 
-function LoginForm() {
+function LoginForm({ closeModal }) {
+  const { login, isLoading } = useLogin();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -13,7 +15,16 @@ function LoginForm() {
 
     if (!email || !password) return;
 
-    console.log(email, password);
+    login(
+      { email, password },
+      {
+        onSettled: () => {
+          setEmail('');
+          setPassword('');
+        },
+        onSuccess: () => closeModal(),
+      },
+    );
   }
 
   return (
@@ -24,6 +35,7 @@ function LoginForm() {
           id="email"
           placeholder="Enter Email"
           autoComplete="username"
+          disabled={isLoading}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
@@ -34,11 +46,12 @@ function LoginForm() {
           id="password"
           placeholder="Password"
           autoComplete="current-password"
+          disabled={isLoading}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
       </FormRow>
-      <Button>Submit</Button>
+      <Button disabled={!email || !password || isLoading}>Submit</Button>
     </Form>
   );
 }
