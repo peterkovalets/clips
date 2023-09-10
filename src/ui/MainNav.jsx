@@ -10,6 +10,16 @@ function MainNav() {
   const { logout } = useLogout();
   const [showLoginModal, setShowLoginModal] = useState(false);
 
+  function handleLogout(e) {
+    e.preventDefault();
+    if (window.confirm('Are you sure you want to logout?')) logout();
+  }
+
+  function handleShowLoginModal(e) {
+    e.preventDefault();
+    setShowLoginModal(true);
+  }
+
   return (
     <nav>
       <ul className="flex gap-4">
@@ -21,25 +31,12 @@ function MainNav() {
             <LinkButton to="/upload" navLink>
               Upload
             </LinkButton>
-            <LinkButton
-              onClick={(e) => {
-                e.preventDefault();
-                if (window.confirm('Are you sure you want to logout?'))
-                  logout();
-              }}
-            >
-              Logout
-            </LinkButton>
+            <LinkButton onClick={handleLogout}>Logout</LinkButton>
           </>
         ) : (
           <>
             <li>
-              <LinkButton
-                onClick={(e) => {
-                  e.preventDefault();
-                  setShowLoginModal(true);
-                }}
-              >
+              <LinkButton onClick={handleShowLoginModal}>
                 Login / Register
               </LinkButton>
             </li>
