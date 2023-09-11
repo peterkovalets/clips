@@ -8,6 +8,7 @@ import SpinnerFullPage from './ui/SpinnerFullPage';
 
 const AppLayout = lazy(() => import('./ui/AppLayout'));
 const Home = lazy(() => import('./pages/Home'));
+const NotFound = lazy(() => import('./pages/NotFound'));
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,8 @@ function App() {
               <Route element={<AppLayout />}>
                 <Route index element={<Home />} />
               </Route>
+
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
         </AuthProvider>

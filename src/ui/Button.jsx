@@ -1,6 +1,7 @@
-function Button({ children, disabled = false, ...props }) {
+function Button({ children, disabled = false, onClick, ...props }) {
   return (
     <button
+      onClick={onClick}
       disabled={disabled}
       className="rounded-sm bg-indigo-400 px-3 py-2 transition-all duration-300 enabled:hover:bg-indigo-500 disabled:cursor-not-allowed disabled:opacity-70"
       {...props}
