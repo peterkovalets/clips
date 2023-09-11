@@ -1,11 +1,13 @@
+import { Suspense, lazy } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Toaster } from 'react-hot-toast';
 import AuthProvider from './features/authentication/AuthProvider';
+import SpinnerFullPage from './ui/SpinnerFullPage';
 
-import AppLayout from './ui/AppLayout';
-import Home from './pages/Home';
+const AppLayout = lazy(() => import('./ui/AppLayout'));
+const Home = lazy(() => import('./pages/Home'));
 
 const queryClient = new QueryClient();
 
@@ -16,11 +18,13 @@ function App() {
 
       <BrowserRouter>
         <AuthProvider>
-          <Routes>
-            <Route element={<AppLayout />}>
-              <Route index element={<Home />} />
-            </Route>
-          </Routes>
+          <Suspense fallback={<SpinnerFullPage />}>
+            <Routes>
+              <Route element={<AppLayout />}>
+                <Route index element={<Home />} />
+              </Route>
+            </Routes>
+          </Suspense>
         </AuthProvider>
       </BrowserRouter>
 
