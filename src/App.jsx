@@ -8,6 +8,7 @@ import SpinnerFullPage from './ui/SpinnerFullPage';
 
 const AppLayout = lazy(() => import('./ui/AppLayout'));
 const Home = lazy(() => import('./pages/Home'));
+const Clip = lazy(() => import('./pages/Clip'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 const queryClient = new QueryClient();
@@ -23,6 +24,7 @@ function App() {
             <Routes>
               <Route element={<AppLayout />}>
                 <Route index element={<Home />} />
+                <Route path="clip/:clipId" element={<Clip />} />
               </Route>
 
               <Route path="*" element={<NotFound />} />

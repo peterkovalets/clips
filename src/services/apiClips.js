@@ -1,5 +1,6 @@
 import {
   collection,
+  doc,
   getDoc,
   getDocs,
   limit,
@@ -28,4 +29,20 @@ export async function getClips() {
   await Promise.all(clipPromises);
 
   return clips;
+}
+
+export async function getClip(id) {
+  const docRef = doc(db, 'clips', id);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    const clipData = docSnap.data();
+    const userData = await getDoc(clipData.userRef);
+
+    clipData.userName = userData.data().name;
+
+    return clipData;
+  } else {
+    throw new Error('Clip not found');
+  }
 }
