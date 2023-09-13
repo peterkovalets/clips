@@ -5,11 +5,13 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Toaster } from 'react-hot-toast';
 import AuthProvider from './features/authentication/AuthProvider';
 import SpinnerFullPage from './ui/SpinnerFullPage';
+import ProtectedRoute from './features/authentication/ProtectedRoute';
 
 const AppLayout = lazy(() => import('./ui/AppLayout'));
 const Home = lazy(() => import('./pages/Home'));
 const Clip = lazy(() => import('./pages/Clip'));
 const Manage = lazy(() => import('./pages/Manage'));
+const Upload = lazy(() => import('./pages/Upload'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 const queryClient = new QueryClient();
@@ -26,7 +28,22 @@ function App() {
               <Route element={<AppLayout />}>
                 <Route index element={<Home />} />
                 <Route path="clip/:clipId" element={<Clip />} />
-                <Route path="manage" element={<Manage />} />
+                <Route
+                  path="manage"
+                  element={
+                    <ProtectedRoute>
+                      <Manage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="upload"
+                  element={
+                    <ProtectedRoute>
+                      <Upload />
+                    </ProtectedRoute>
+                  }
+                />
               </Route>
 
               <Route path="*" element={<NotFound />} />

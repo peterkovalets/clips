@@ -1,4 +1,6 @@
 import {
+  Timestamp,
+  addDoc,
   collection,
   doc,
   getDoc,
@@ -7,7 +9,8 @@ import {
   orderBy,
   query,
 } from 'firebase/firestore';
-import { db } from './firebase';
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
+import { auth, db } from './firebase';
 
 export async function getClips() {
   const q = query(
@@ -45,4 +48,29 @@ export async function getClip(id) {
   } else {
     throw new Error('Clip not found');
   }
+}
+
+export async function createClip(clip) {
+  // Uploading the clip itself
+  const { name, file } = clip;
+  const storage = getStorage();
+  const fileName = `${crypto.randomUUID()}-${name
+    .toLowerCase()
+    .replaceAll(' ', '-')
+    .replaceAll('/', '')}`;
+  const clipsRef = ref(storage, `clips/${fileName}`);
+  const uploadSnapshot = await uploadBytes(clipsRef, file);
+  const clipUrl = await getDownloadURL(uploadSnapshot.ref);
+
+  // Creating a new clip in database
+  const userId = auth.currentUser.uid;
+  const userRef = doc(db, 'users', userId);
+  const newClip = {
+    name,
+    createdAt: Timestamp.now(),
+    clipUrl,
+    userRef: userRef,
+  };
+  const newClipRef = await addDoc(collection(db, 'clips'), newClip);
+  return newClipRef.id;
 }
