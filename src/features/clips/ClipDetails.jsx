@@ -4,14 +4,16 @@ import Heading from '../../ui/Heading';
 import Spinner from '../../ui/Spinner';
 import Box from '../../ui/Box';
 import { useClip } from './useClip';
+import { useTitle } from '../../hooks/useTitle';
 import { formatDate } from '../../utils/helpers';
 
 function ClipDetails() {
   const { clip, isLoading } = useClip();
+  const { name, userName, createdAt, clipUrl } = clip || {};
+  useTitle(name);
 
   if (isLoading) return <Spinner />;
 
-  const { name, userName, createdAt, clipUrl } = clip;
   const createdAtDate = new Date(createdAt.seconds * 1000);
 
   return (
