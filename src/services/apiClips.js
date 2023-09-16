@@ -8,6 +8,7 @@ import {
   limit,
   orderBy,
   query,
+  where,
 } from 'firebase/firestore';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import { auth, db } from './firebase';
@@ -30,6 +31,28 @@ export async function getClips() {
   });
 
   await Promise.all(clipPromises);
+
+  return clips;
+}
+
+export async function getCurrentUserClips() {
+  // Getting current user
+  const userId = auth.currentUser.uid;
+  const userRef = doc(db, 'users', userId);
+
+  // Fetching current user's clips
+  const q = query(
+    collection(db, 'clips'),
+    where('userRef', '==', userRef),
+    orderBy('createdAt', 'desc'),
+  );
+  const querySnapshot = await getDocs(q);
+
+  const clips = [];
+
+  querySnapshot.forEach((doc) => {
+    clips.push({ id: doc.id, ...doc.data() });
+  });
 
   return clips;
 }
