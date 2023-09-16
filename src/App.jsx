@@ -12,6 +12,7 @@ const Home = lazy(() => import('./pages/Home'));
 const Clip = lazy(() => import('./pages/Clip'));
 const Manage = lazy(() => import('./pages/Manage'));
 const Upload = lazy(() => import('./pages/Upload'));
+const About = lazy(() => import('./pages/About'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 const queryClient = new QueryClient();
@@ -44,6 +45,7 @@ function App() {
                     </ProtectedRoute>
                   }
                 />
+                <Route path="about" element={<About />} />
               </Route>
 
               <Route path="*" element={<NotFound />} />
