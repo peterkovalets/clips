@@ -35,7 +35,7 @@ export async function getClips() {
   return clips;
 }
 
-export async function getCurrentUserClips() {
+export async function getCurrentUserClips({ sortBy }) {
   // Getting current user
   const userId = auth.currentUser.uid;
   const userRef = doc(db, 'users', userId);
@@ -44,7 +44,7 @@ export async function getCurrentUserClips() {
   const q = query(
     collection(db, 'clips'),
     where('userRef', '==', userRef),
-    orderBy('createdAt', 'desc'),
+    orderBy(sortBy.field, sortBy.direction),
   );
   const querySnapshot = await getDocs(q);
 
