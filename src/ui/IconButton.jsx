@@ -1,8 +1,11 @@
-function IconButton({ children, onClick }) {
+function IconButton({ children, onClick, disabled = false }) {
   return (
     <button
       onClick={onClick}
-      className="flex justify-center text-lg transition-colors duration-300 hover:text-indigo-400"
+      disabled={disabled}
+      className={`flex justify-center text-lg transition-colors duration-300 enabled:hover:text-indigo-400 ${
+        disabled ? 'cursor-not-allowed opacity-70' : ''
+      }`}
     >
       {children}
     </button>

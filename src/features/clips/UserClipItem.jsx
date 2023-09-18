@@ -2,8 +2,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { HiOutlineTrash, HiOutlineWrench } from 'react-icons/hi2';
 import Heading from '../../ui/Heading';
 import IconButton from '../../ui/IconButton';
+import { useDeleteClip } from './useDeleteClip';
 
 function UserClipItem({ clip }) {
+  const { deleteClip, isDeleting } = useDeleteClip();
   const navigate = useNavigate();
   const { id, name, thumbnailUrl } = clip;
 
@@ -13,7 +15,7 @@ function UserClipItem({ clip }) {
 
   function handleDelete() {
     if (window.confirm(`Are you sure you want to delete ${name}?`))
-      console.log(id);
+      deleteClip(id);
   }
 
   return (
@@ -25,10 +27,10 @@ function UserClipItem({ clip }) {
             <Link to={`/clip/${id}`}>{name}</Link>
           </Heading>
           <footer className="mt-4 grid grid-cols-2 border-t pt-4">
-            <IconButton onClick={handleEditRedirect}>
+            <IconButton disabled={isDeleting} onClick={handleEditRedirect}>
               <HiOutlineWrench />
             </IconButton>
-            <IconButton onClick={handleDelete}>
+            <IconButton disabled={isDeleting} onClick={handleDelete}>
               <HiOutlineTrash />
             </IconButton>
           </footer>

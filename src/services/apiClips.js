@@ -2,6 +2,7 @@ import {
   Timestamp,
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -80,7 +81,7 @@ export async function createClip(clip) {
   const fileName = `${crypto.randomUUID()}-${name
     .toLowerCase()
     .replaceAll(' ', '-')
-    .replaceAll('/', '')}`;
+    .replaceAll('/', '')}.mp4`;
   const clipsRef = ref(storage, `clips/${fileName}`);
   const uploadSnapshot = await uploadBytes(clipsRef, file);
   const clipUrl = await getDownloadURL(uploadSnapshot.ref);
@@ -96,4 +97,8 @@ export async function createClip(clip) {
   };
   const newClipRef = await addDoc(collection(db, 'clips'), newClip);
   return newClipRef.id;
+}
+
+export async function deleteClip(id) {
+  await deleteDoc(doc(db, 'clips', id));
 }
