@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
+import VideoSnapshot from 'video-snapshot';
 import Box from '../../ui/Box';
 import Heading from '../../ui/Heading';
 import Form from '../../ui/Form';
@@ -39,9 +40,12 @@ function UploadClipForm() {
     setFile(file);
   }
 
-  function onSubmit(data) {
-    const newData = { ...data, file };
-    createClip(newData);
+  async function onSubmit(data) {
+    const clip = { ...data, file };
+    const snapshoter = new VideoSnapshot(file);
+    const thumbnail = await snapshoter.takeSnapshot();
+
+    createClip({ clip, thumbnail });
   }
 
   return (

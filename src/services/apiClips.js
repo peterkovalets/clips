@@ -74,17 +74,17 @@ export async function getClip(id) {
   }
 }
 
-export async function createClip(clip) {
+export async function createClip({ clip, thumbnail }) {
   // Uploading the clip itself
-  const { name, file } = clip;
+  const { name, file: clipFile } = clip;
   const storage = getStorage();
-  const fileName = `${crypto.randomUUID()}-${name
+  const clipFileName = `${crypto.randomUUID()}-${name
     .toLowerCase()
     .replaceAll(' ', '-')
     .replaceAll('/', '')}.mp4`;
-  const clipsRef = ref(storage, `clips/${fileName}`);
-  const uploadSnapshot = await uploadBytes(clipsRef, file);
-  const clipUrl = await getDownloadURL(uploadSnapshot.ref);
+  const clipsRef = ref(storage, `clips/${clipFileName}`);
+  const uploadClipSnapshot = await uploadBytes(clipsRef, clipFile);
+  const clipUrl = await getDownloadURL(uploadClipSnapshot.ref);
 
   // Creating a new clip in database
   const userId = auth.currentUser.uid;
@@ -93,6 +93,7 @@ export async function createClip(clip) {
     name,
     createdAt: Timestamp.now(),
     clipUrl,
+    thumbnailUrl: thumbnail,
     userRef: userRef,
   };
   const newClipRef = await addDoc(collection(db, 'clips'), newClip);
